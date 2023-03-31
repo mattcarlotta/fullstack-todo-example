@@ -1,0 +1,23 @@
+{
+  "name": "fullstack-todo-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "pnpm --stream -r start",
+    "migrate": "pnpm --stream -r migrate",
+    "generate": "pnpm --stream -r generate",
+    "dev": "pnpm --parallel --stream -r run dev",
+    "build": "pnpm --stream -r run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattcarlotta/fullstack-todo-example.git"
+  },
+  "author": "Matt Carlotta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mattcarlotta/fullstack-todo-example/issues"
+  },
+  "homepage": "https://github.com/mattcarlotta/fullstack-todo-example#readme"
+}

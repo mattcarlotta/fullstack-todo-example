@@ -1,0 +1,7 @@
+node_modules
+dist
+todo.md
+build
+tsconfig.tsbuildinfo
+.pnpm-debug.log
+.env
