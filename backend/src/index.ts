@@ -3,4 +3,4 @@ import app from './app';
 import './middlewares';
 import './controllers';
 
-app.listen();
+app.listen(process.env.PORT);

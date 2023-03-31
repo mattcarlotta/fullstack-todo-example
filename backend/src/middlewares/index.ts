@@ -1,6 +1,8 @@
-import express from 'express';
 import type { NextFunction, Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
+import express from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
 import app from '../app';
 
 const middleware = app.createMiddleware();
@@ -10,4 +12,9 @@ function setUserIdOnRequest(req: Request, _res: Response, next: NextFunction) {
     next();
 }
 
-middleware.use(express.json()).use(morgan('tiny')).use(setUserIdOnRequest);
+middleware
+    .use(cors({ origin: ['http://localhost:3000'] }))
+    .use(express.json())
+    .use(cookieParser())
+    .use(morgan('tiny'))
+    .use(setUserIdOnRequest);

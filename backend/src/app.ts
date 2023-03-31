@@ -120,7 +120,7 @@ class App {
         return new Middleware(this.app);
     }
 
-    public listen(port = 3000) {
+    public listen(port = '4000') {
         this.app.listen(port, () => console.log(`🚀 Server ready at: http://localhost:${port}`));
     }
 }

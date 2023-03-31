@@ -5,6 +5,7 @@ declare global {
         interface ProcessEnv {
             DATABASE_URL: string;
             JWT_SECRET: string;
+            PORT: string;
         }
     }
     namespace Express {

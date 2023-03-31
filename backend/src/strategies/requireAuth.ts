@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from 'express';
-import * as z from 'zod';
+import type { SESSION_PAYLOAD_TYPE } from 'types';
 import jwt from 'jsonwebtoken';
+import { SESSION_PAYLOAD, SESSION_TOKEN } from 'types';
 import { AuthValidationError } from '../utils/error';
 import { user } from '../app';
 import chalk from 'chalk';
@@ -15,22 +16,17 @@ function validateToken<T>(token: string) {
     }
 }
 
-const JwtPayload = z.object({
-    userId: z.string(),
-    iat: z.number(),
-    exp: z.number()
-});
-
 export default async function requireAuth(req: Request, res: Response, next: NextFunction) {
-    const authHeader = req.get('authorization');
-    const token = authHeader?.split(' ')[1] || '';
-    if (!token) throw new AuthValidationError('You must be signed in to do that!');
+    const cookieSession = SESSION_TOKEN.safeParse(req.cookies);
+    if (!cookieSession.success) throw new AuthValidationError('You must be signed in to do that!');
 
-    const payload = validateToken<z.infer<typeof JwtPayload>>(token);
-    const parsedPayload = JwtPayload.safeParse(payload);
+    const { SESSION_TOKEN: token } = cookieSession.data;
+
+    const payload = validateToken<SESSION_PAYLOAD_TYPE>(token);
+    const parsedPayload = SESSION_PAYLOAD.safeParse(payload);
     if (!parsedPayload.success) {
         res.clearCookie('SESSION_TOKEN');
-        throw new AuthValidationError('Unable to verify authorization token.');
+        throw new AuthValidationError('Unable to verify session.');
     }
 
     const { userId } = parsedPayload.data;
@@ -38,7 +34,7 @@ export default async function requireAuth(req: Request, res: Response, next: Nex
     const existingUser = await user.findUnique({ where: { id: userId } });
     if (!existingUser) {
         res.clearCookie('SESSION_TOKEN');
-        throw new AuthValidationError('Unable to verify authorization token.');
+        throw new AuthValidationError('Unable to verify session.');
     }
 
     req.userId = userId;
