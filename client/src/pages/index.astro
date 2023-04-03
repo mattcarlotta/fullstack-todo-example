@@ -1,14 +1,16 @@
 ---
+import LogoIcon from '../icons/LogoIcon.astro';
 import MainLayout from '../layouts/main.astro';
 ---
 
 <MainLayout title="Todo FullStack Example">
     <section class="h-[60%] flex justify-center items-center flex-col">
-        <h1 class="blue-text-shadow font-stylized text-[2rem] uppercase leading-none tracking-wider text-white sm:text-5xl">
-            Matt Carlotta
+        <h1 class="flex items-center text-white">
+            <LogoIcon className="h-[80px]" />
+            <span class="text-[2rem] uppercase leading-none tracking-wider sm:text-5xl">Todo App</span>
         </h1>
         <h2 class="font-stylized text-base font-bold text-primary sm:text-lg">
-            Fullstack Todo App Example
+            An example fullstack todo app utilizing Astro, SolidJS, Prisma, tRPC, and ExpressJS
         </h2>
     </section>
 </MainLayout>
