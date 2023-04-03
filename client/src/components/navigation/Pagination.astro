@@ -1,0 +1,70 @@
+---
+interface Props {
+  category: string
+  total: number
+}
+
+const { category, total } = Astro.props
+
+const pageQuery = Astro.url.searchParams.get('page')
+const currentPage = Math.max(parseInt(pageQuery || '1', 10), 1)
+
+const pageCount = Math.ceil(total / 9)
+const pages = Array.from({ length: pageCount }).map((_, i) => i + 1)
+---
+
+<>
+  {
+    pageCount > 0 ? (
+      <div class="pagination">
+        <nav class="flex space-x-4 rounded-md text-md uppercase md:hidden" aria-label="Pagination">
+          {currentPage >= 2 ? (
+            <a
+              aria-label="previous page"
+              class="w-24 rounded-md border border-primary-25 p-2 text-center font-semibold text-white hover:bg-primary-25"
+              href={currentPage > 2 ? `/${category}/?page=${currentPage - 1}` : `/${category}/`}
+            >
+              previous
+            </a>
+          ) : (
+            <p class="pointer-events-none w-24 cursor-not-allowed rounded-md border border-gray-400 p-2 text-center font-semibold text-gray-400">
+              previous
+            </p>
+          )}
+          <p class="px-4 py-2 font-bold text-accent">page {currentPage}</p>
+          {currentPage < pageCount ? (
+            <a
+              aria-label="next page"
+              class="w-24 rounded-md border border-primary-25 p-2 text-center font-semibold text-white hover:bg-primary-25"
+              href={`/${category}/?page=${currentPage + 1}`}
+            >
+              next
+            </a>
+          ) : (
+            <p class="pointer-events-none w-24 cursor-not-allowed rounded-md border border-gray-400 p-2 text-center font-semibold text-gray-400">
+              next
+            </p>
+          )}
+        </nav>
+        <nav class="hidden w-full items-center justify-center space-x-4 text-lg font-bold md:flex">
+          {pages.map((page) =>
+            page === currentPage ? (
+              <p class="w-12 rounded border-2 border-primary-25 bg-primary-1000 px-4 py-2 text-center text-white shadow-ring">
+                {page}
+              </p>
+            ) : (
+              <a
+                aria-label={`page ${page}`}
+                class="w-12 rounded border border-primary-500 px-4 py-2 text-center
+        text-gray-200 transition-colors ease-in-out hover:border-white hover:text-white"
+                href={`/${category}/${page !== 1 ? `?page=${page}` : ''}`}
+              >
+                {page}
+              </a>
+            )
+          )}
+        </nav>
+      </div>
+    ) : null
+  }
+</>

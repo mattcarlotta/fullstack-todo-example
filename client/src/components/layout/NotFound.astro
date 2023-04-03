@@ -1,0 +1,45 @@
+---
+import NotFoundIcon from '../../icons/NotfoundIcon.astro'
+import GoBack from '../navigation/GoBack.astro'
+import Panel from './Panel.astro'
+import PanelTitle from './PanelTitle.astro'
+import Project from './Project.astro'
+---
+
+<>
+  <style slot="head" is:inline>
+    @media (hover: hover) {
+      .panel-body [data-title='bar'] {
+        display: block;
+        opacity: 1;
+      }
+    }
+
+    .panel-body {
+      --tw-shadow: inset -1px -1px 24px -9px rgb(101 130 255 / 50%), 0px 0px 26px -2px rgb(0 64 255);
+      --tw-shadow-colored: inset -1px -1px 24px -9px var(--tw-shadow-color),
+        0px 0px 26px -2px var(--tw-shadow-color);
+      box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+        var(--tw-shadow);
+      color: rgb(0 136 255 / 1);
+      width: 100%;
+      overflow: hidden;
+      border-radius: 0.25rem;
+      padding-bottom: 1rem;
+      border: 2px solid transparent;
+      text-align: left;
+      border-image: linear-gradient(to top, #73b9ff 0%, #005193 50%, #005193 100%);
+      border-image-slice: 1;
+    }
+  </style>
+  <Project>
+    <PanelTitle id="">file not found</PanelTitle>
+    <Panel>
+      <div class="flex h-128 flex-col items-center justify-center space-y-8">
+        <NotFoundIcon className="text-ginormous" />
+        <p class="py-2.5 px-5 tracking-wide">Unable to locate the requested file.</p>
+      </div>
+    </Panel>
+  </Project>
+  <GoBack href="/" title="home" />
+</>

@@ -1,0 +1,12 @@
+---
+import type { OptionalClassName } from '../../types'
+import clsx from '../../utils/clsx'
+
+type Props = OptionalClassName
+
+const { className } = Astro.props
+---
+
+<p class={clsx('my-2.5 break-all sm:break-normal', className)}>
+  <slot />
+</p>

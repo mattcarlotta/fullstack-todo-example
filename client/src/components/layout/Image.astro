@@ -1,0 +1,27 @@
+---
+import type { OptionalClassName } from '../../types'
+import type { THeightAndWidth } from '../../utils/types'
+import calculateScale from '../../utils/calculateScale'
+
+type Props = THeightAndWidth &
+  OptionalClassName & {
+    alt?: string
+    contentType: string
+    priority?: boolean
+    scale?: number
+    url: string
+  }
+
+const { alt, className, contentType, height, scale = 0, url, width } = Astro.props
+
+const isRescaled = scale !== 0
+const newHeight = isRescaled ? calculateScale(height, scale) : height
+const newWidth = isRescaled ? calculateScale(width, scale) : width
+const rescale = isRescaled ? `fit=scale&h=${newHeight}&w=${newWidth}` : ''
+---
+
+<picture>
+  <source srcset={`${url}?fm=webp${isRescaled ? `&${rescale}` : ''}`} type="image/webp" />
+  <source srcset={`${url}${isRescaled ? `?${rescale}` : ''}`} type={contentType} />
+  <img src={url} height={newHeight} width={newWidth} alt={alt} class={className} />
+</picture>

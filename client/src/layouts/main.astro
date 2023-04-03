@@ -1,0 +1,73 @@
+---
+import Link from '../components/navigation/Link.astro'
+import LogoIcon from '../icons/LogoIcon.astro'
+import concatTitle from '../utils/concatTitle'
+
+interface Props {
+  description?: string
+  title?: string
+  type?: string
+}
+
+const { description, title, type } = Astro.props
+const documentTitle = concatTitle(title, description)
+const documentType = type || 'website'
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="description" content={description} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content={documentType} />
+    <meta property="og:title" content={documentTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={documentType} />
+    <meta property="og:site_name" content="Todo FullStack Example" />
+    <title>{documentTitle}</title>
+    <style is:inline>
+      html,
+      body {
+        height: 100svh;
+      }
+
+      #main {
+        height: calc(100% - 70px);
+      }
+    </style>
+  </head>
+  <body class="bg-primary-1000">
+    <header class="overflow-hidden">
+      <a
+        id="skip-to-content"
+        aria-label="Skip to main content"
+        class="absolute left-[-9999px] top-4 z-50 rounded bg-primary-50 p-2 text-center text-white no-underline shadow-ring focus:left-5"
+        href="#main"
+      >
+        Skip to content
+      </a>
+    </header>
+    <nav class="flex items-center w-full text-white py-2 px-8 border-b border-b-gray">
+      <div class="flex-1">
+        <Link className="flex max-w-max items-center px-2 text-white" href="/">
+          <LogoIcon className="h-12 w-12" />
+          <p class="text-xl">Fullstack Todo App</p>
+        </Link>
+      </div>
+      <Link className="p-2 text-white text-md" href="/todo">My Account</Link>
+    </nav>
+    <main id="main" class="mx-auto w-full max-w-main p-2.5">
+      <slot />
+      <footer
+        class="mt-20 mb-10 flex flex-col items-center justify-center whitespace-nowrap pb-2 text-md font-extrabold uppercase text-accent sm:mb-0 sm:flex-row sm:space-x-4"
+      >
+        <p class="mb-2 sm:mb-0 sm:p-2.5">&#169;{new Date().getFullYear()} Matt Carlotta</p>
+      </footer>
+    </main>
+  </body>
+</html>
