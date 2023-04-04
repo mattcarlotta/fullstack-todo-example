@@ -17,7 +17,7 @@ const { ariaLabel, className, href, noFocusRing, underline } = Astro.props
 <a
   aria-label={ariaLabel}
   class={clsx(
-    'primary rounded border-2 border-solid border-transparent transition-[box-shadow] duration-300 ease-in-out',
+    'rounded border-2 border-solid border-transparent transition-[box-shadow] duration-300 ease-in-out',
     className,
     noFocusRing ? '' : 'focus:border-primary-100 focus:shadow-ring focus:text-white',
     underline ? 'underline' : 'no-underline'

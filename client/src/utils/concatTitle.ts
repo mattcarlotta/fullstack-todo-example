@@ -3,7 +3,7 @@ export default function concatTitle(title = '', description = '') {
         .split(' ')
         .map((str) => str.charAt(0).toUpperCase().concat(str.slice(1)))
         .join(' ')
-        .concat(` ${title && '-'} ${description} | Matt Carlotta`)
+        .concat(` ${title && '-'} ${description} | Todo App`)
         .replace(/\./, '')
         .trim();
 }

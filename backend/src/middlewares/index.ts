@@ -13,7 +13,7 @@ function setUserIdOnRequest(req: Request, _res: Response, next: NextFunction) {
 }
 
 middleware
-    .use(cors({ origin: ['http://localhost:3000'] }))
+    .use(cors({ origin: [process.env.CLIENT_DOMAIN], credentials: true }))
     .use(express.json())
     .use(cookieParser())
     .use(morgan('tiny'))

@@ -47,7 +47,12 @@ router
 
         return res
             .status(200)
-            .cookie('SESSION_TOKEN', jwtToken, { path: '/', expires: expDate })
+            .cookie('SESSION_TOKEN', jwtToken, {
+                path: '/',
+                expires: expDate,
+                secure: false,
+                httpOnly: true
+            })
             .end();
     })
     .post('/signout', async (_req, res) => {

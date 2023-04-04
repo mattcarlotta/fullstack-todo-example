@@ -1,0 +1,35 @@
+---
+import LogoIcon from '../icons/LogoIcon';
+import MainLayout from '../layouts/main.astro';
+
+const token = Astro.cookies.get('SESSION_TOKEN')?.value
+if(!token){
+    return Astro.redirect('/login');
+}
+
+const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/todo/all`, { 
+    method: "GET", 
+    headers: { 
+        cookie: `SESSION_TOKEN=${token}`
+    } 
+});
+
+if(!res.ok) {
+    const error = await res.text();
+    console.error(error);
+}
+
+const todos = await res.json();
+
+---
+
+<MainLayout title="My Todos" showLogout>
+    <section class="min-h-body max-w-screen-lg mx-auto">
+        <h1 class="flex justify-center items-center space-x-2 text-white">
+            <LogoIcon className="h-[40px]" />
+            <span class="text-[2.25rem] tracking-wider">My Todos</span>
+        </h1>
+        <pre>{JSON.stringify(todos, null, 4)}</pre>
+    </section>
+</MainLayout>
+

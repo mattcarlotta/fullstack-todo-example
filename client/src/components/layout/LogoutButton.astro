@@ -1,0 +1,25 @@
+---
+
+---
+
+<button
+    id="logout"
+    class="text-white rounded border-2 border-solid border-transparent transition-[box-shadow] duration-300 ease-in-out focus:border-primary-100 focus:shadow-ring focus:text-white"
+    type="button"
+>
+    Log Out
+</button>
+<script> 
+    const logoutButton = document.getElementById('logout')
+
+    if(logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+            await fetch(`${import.meta.env.PUBLIC_API_URL}/signout`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+
+            window.location.pathname = '/login';
+        })
+    }
+</script>
