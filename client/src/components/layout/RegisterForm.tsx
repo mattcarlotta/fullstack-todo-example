@@ -13,6 +13,10 @@ type Store = {
         value: string;
         error: string;
     };
+    name: {
+        value: string;
+        error: string;
+    };
     password: {
         value: string;
         error: string;
@@ -21,9 +25,10 @@ type Store = {
     formError: string;
 };
 
-export default function LoginForm() {
+export default function RegisterForm() {
     const [store, setStore] = createStore<Store>({
         email: { value: '', error: '' },
+        name: { value: '', error: '' },
         password: { value: '', error: '' },
         isSubmitting: false,
         formError: ''
@@ -40,20 +45,19 @@ export default function LoginForm() {
         setStore('formError', '');
         setStore('isSubmitting', true);
         try {
-            const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/login`, {
+            const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/signup`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 method: 'POST',
-                body: JSON.stringify({ email: store.email.value, password: store.password.value }),
-                credentials: 'include'
+                body: JSON.stringify({ email: store.email.value, name: store.name.value, password: store.password.value }),
             });
             if (!res.ok) {
                 const error = await res.text();
                 throw error;
             }
 
-            window.location.pathname = '/todo';
+            window.location.pathname = '/login';
         } catch (error) {
             setStore('formError', String(error));
             setStore('isSubmitting', false);
@@ -67,7 +71,22 @@ export default function LoginForm() {
                     <LogoIcon className="h-[40px]" />
                     <span class="text-2xl uppercase leading-none tracking-wider">Todo App</span>
                 </h1>
-                <h2 class="text-lg text-center">Log In</h2>
+                <h2 class="text-lg text-center">Register</h2>
+                <div class="flex flex-col space-y-1 h-24">
+                    <label class="block" html-for="user-name">
+                        Dipslay Name
+                    </label>
+                    <input
+                        class="px-1.5 py-2 rounded text-black"
+                        type="text"
+                        name="name"
+                        id="user-name"
+                        placeholder="Enter a display name..."
+                        value={store.name.value}
+                        onInput={handleInputChange}
+                    />
+                    {store.name.error && <p>{store.name.error}</p>}
+                </div>
                 <div class="flex flex-col space-y-1 h-24">
                     <label class="block" html-for="email">
                         Email
@@ -92,6 +111,7 @@ export default function LoginForm() {
                         type={passwordVisible() ? 'text' : 'password'}
                         name="password"
                         id="password"
+                        min={5}
                         placeholder="Enter a password..."
                         value={store.password.value}
                         onInput={handleInputChange}
@@ -115,7 +135,7 @@ export default function LoginForm() {
                         )}
                         type="submit"
                     >
-                        Login
+                        Register
                     </button>
                 </div>
                 {store.formError && <p class="text-fire">{store.formError}</p>}

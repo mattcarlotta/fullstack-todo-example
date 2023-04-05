@@ -1,28 +1,27 @@
 ---
-import type { AriaLabel, Href, OptionalClassName } from '../../types'
-import clsx from '../../utils/clsx'
+import type { AriaLabel, Href, OptionalClassName } from '../../types';
+import clsx from '../../utils/clsx';
 
 type Props = AriaLabel &
-  Href &
-  OptionalClassName & {
-    asHref?: string
-    noFocusRing?: boolean
-    scroll?: boolean
-    underline?: boolean
-  }
+    Href &
+    OptionalClassName & {
+        asHref?: string;
+        noFocusRing?: boolean;
+        underline?: boolean;
+    };
 
-const { ariaLabel, className, href, noFocusRing, underline } = Astro.props
+const { ariaLabel, className, href, noFocusRing, underline } = Astro.props;
 ---
 
 <a
-  aria-label={ariaLabel}
-  class={clsx(
-    'rounded border-2 border-solid border-transparent transition-[box-shadow] duration-300 ease-in-out',
-    className,
-    noFocusRing ? '' : 'focus:border-primary-100 focus:shadow-ring focus:text-white',
-    underline ? 'underline' : 'no-underline'
-  )}
-  href={href}
+    aria-label={ariaLabel}
+    class={clsx(
+        'rounded border-2 border-solid border-transparent duration-300 ease-in-out',
+        className,
+        noFocusRing ? '' : 'focus:border-primary-100 focus:shadow-ring focus:text-white',
+        underline ? 'underline' : 'no-underline'
+    )}
+    href={href}
 >
-  <slot />
+    <slot />
 </a>

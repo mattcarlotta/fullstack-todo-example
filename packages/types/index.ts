@@ -11,9 +11,14 @@ export const Id = z.object({ id: z.string() });
 const Title = z.object({ title: z.string().min(1).max(300) });
 const Content = z.object({ content: z.string().min(1).max(1000) });
 const Completed = z.object({ completed: z.boolean() });
+const AuthorId = z.object({ authorId: z.string() })
+const CreatedAt = z.object({ createdAt: z.string() })
+const UpdatedAt = z.object({ updatedAt: z.string() })
 
 export const CREATE_TODO = Title.merge(Content).merge(Completed);
 export const EDIT_TODO = CREATE_TODO;
+export const TODO = Id.merge(Title).merge(Content).merge(Completed).merge(AuthorId).merge(CreatedAt).merge(UpdatedAt)
+export const TODOS = z.array(TODO)
 
 export const SESSION_PAYLOAD = z.object({
     userId: z.string(),

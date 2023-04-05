@@ -1,5 +1,4 @@
 import { createStore } from 'solid-js/store';
-import LogoIcon from '../../icons/LogoIcon';
 import { createSignal } from 'solid-js';
 import clsx from '../../utils/clsx';
 
@@ -9,12 +8,16 @@ type InputChangeEvent = InputEvent & {
 };
 
 type Store = {
-    email: {
+    title: {
         value: string;
         error: string;
     };
-    password: {
+    content: {
         value: string;
+        error: string;
+    };
+    completed: {
+        value: boolean;
         error: string;
     };
     isSubmitting: boolean;
@@ -23,8 +26,9 @@ type Store = {
 
 export default function LoginForm() {
     const [store, setStore] = createStore<Store>({
-        email: { value: '', error: '' },
-        password: { value: '', error: '' },
+        title: { value: '', error: '' },
+        content: { value: '', error: '' },
+        completed: { value: true, error: '' },
         isSubmitting: false,
         formError: ''
     });
@@ -40,12 +44,12 @@ export default function LoginForm() {
         setStore('formError', '');
         setStore('isSubmitting', true);
         try {
-            const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/login`, {
+            const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/create`, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 method: 'POST',
-                body: JSON.stringify({ email: store.email.value, password: store.password.value }),
+                body: JSON.stringify({ title: store.title.value, content: store.content.value, completed: store.completed.value }),
                 credentials: 'include'
             });
             if (!res.ok) {
@@ -53,7 +57,7 @@ export default function LoginForm() {
                 throw error;
             }
 
-            window.location.pathname = '/todo';
+            // update todos parent state
         } catch (error) {
             setStore('formError', String(error));
             setStore('isSubmitting', false);
@@ -61,50 +65,47 @@ export default function LoginForm() {
     };
 
     return (
-        <div class="flex flex-col space-y-8 p-8 bg-primary-400 rounded text-white w-full max-w-screen-xs">
+        <div class="flex flex-col p-8 bg-primary-400 rounded text-white w-full max-w-screen-xs">
             <form class="flex flex-col space-y-2" onSubmit={handleSubmit}>
-                <h1 class="flex justify-center items-center text-white">
-                    <LogoIcon className="h-[40px]" />
-                    <span class="text-2xl uppercase leading-none tracking-wider">Todo App</span>
-                </h1>
-                <h2 class="text-lg text-center">Log In</h2>
                 <div class="flex flex-col space-y-1 h-24">
-                    <label class="block" html-for="email">
-                        Email
+                    <label class="block" html-for="title">
+                        Title
                     </label>
                     <input
                         class="px-1.5 py-2 rounded text-black"
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Enter an email..."
-                        value={store.email.value}
+                        type="text"
+                        name="title"
+                        id="title"
+                        placeholder="Enter todo title..."
+                        value={store.title.value}
                         onInput={handleInputChange}
                     />
-                    {store.email.error && <p>{store.email.error}</p>}
+                    {store.title.error && <p>{store.title.error}</p>}
                 </div>
-                <div class="flex flex-col space-y-1 h-32">
-                    <label class="block" html-for="password">
-                        Password
+                <div class="flex flex-col space-y-1 h-24">
+                    <label class="block" html-for="content">
+                        Content
                     </label>
                     <input
                         class="px-1.5 py-2 rounded text-black"
-                        type={passwordVisible() ? 'text' : 'password'}
-                        name="password"
-                        id="password"
-                        placeholder="Enter a password..."
-                        value={store.password.value}
+                        type="text"
+                        name="content"
+                        id="content"
+                        placeholder="Enter a todo description..."
+                        value={store.content.value}
                         onInput={handleInputChange}
                     />
+                    {store.content.error && <p>{store.content.error}</p>}
+                </div>
+                <div class="flex flex-col space-y-1 h-20">
                     <label class="flex space-x-1">
-                        <p>Show Password</p>
+                        <p>Completed</p>
                         <input
                             class="block"
                             type="checkbox"
                             onChange={() => setPasswordVisibility((p) => !p)}
                         />
                     </label>
-                    {store.password.error && <p>{store.password.error}</p>}
                 </div>
                 <div>
                     <button
@@ -115,18 +116,12 @@ export default function LoginForm() {
                         )}
                         type="submit"
                     >
-                        Login
+                        Add Todo
                     </button>
                 </div>
                 {store.formError && <p class="text-fire">{store.formError}</p>}
             </form>
-            <hr class="border-t border-gray-300" />
-            <p>
-                Don't have an account?&nbsp;
-                <a class="underline text-white" href="/signup">
-                    Sign Up
-                </a>
-            </p>
         </div>
     );
 }
+

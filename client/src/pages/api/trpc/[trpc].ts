@@ -2,9 +2,9 @@ import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
 import type { APIRoute } from 'astro';
 import router from '../../../utils/router';
 
-export const all: APIRoute = ({ request }) => {
+export const all: APIRoute = ({ request: req }) => {
     return fetchRequestHandler({
-        req: request,
+        req,
         endpoint: '/api/trpc',
         router,
         createContext: () => Promise.resolve(null)
