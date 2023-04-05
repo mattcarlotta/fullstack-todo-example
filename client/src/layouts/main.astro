@@ -1,19 +1,19 @@
 ---
-import Link from '../components/navigation/Link.astro'
-import LogoutButton from '../components/layout/LogoutButton.astro'
-import LogoIcon from '../icons/LogoIcon'
-import concatTitle from '../utils/concatTitle'
+import Link from '../components/navigation/Link.astro';
+import LogoutButton from '../components/layout/LogoutButton.astro';
+import LogoIcon from '../icons/LogoIcon';
+import concatTitle from '../utils/concatTitle';
 
 interface Props {
-  description?: string
-  showLogout?: boolean
-  title?: string
-  type?: string
+    description?: string;
+    showLogout?: boolean;
+    title?: string;
+    type?: string;
 }
 
-const { description, showLogout, title, type } = Astro.props
-const documentTitle = concatTitle(title, description)
-const documentType = type || 'website'
+const { description, showLogout, title, type } = Astro.props;
+const documentTitle = concatTitle(title, description);
+const documentType = type || 'website';
 ---
 
 <!DOCTYPE html>
@@ -55,12 +55,22 @@ const documentType = type || 'website'
                 Skip to content
             </a>
         </header>
-        <nav class="flex items-center justify-between w-full text-white py-2 px-8 border-b border-b-gray">
+        <nav
+            class="flex items-center justify-between w-full text-white py-2 px-8 border-b border-b-gray"
+        >
             <Link className="flex max-w-max items-center px-2 text-white" href="/">
                 <LogoIcon className="h-12 w-12" />
                 <p class="text-xl">Todo App</p>
             </Link>
-            { showLogout ? <LogoutButton /> : <Link className="p-2 text-white text-md" href="/todo">My Account</Link> }
+            {
+                showLogout ? (
+                    <LogoutButton />
+                ) : (
+                    <Link className="p-2 text-white text-md" href="/todo">
+                        My Todos
+                    </Link>
+                )
+            }
         </nav>
         <main id="main" class="mx-auto w-full max-w-main pt-12 p-2.5">
             <slot />

@@ -142,9 +142,9 @@ export default function RegisterForm() {
             </form>
             <hr class="border-t border-gray-300" />
             <p>
-                Don't have an account?&nbsp;
-                <a class="underline text-white" href="/signup">
-                    Sign Up
+                Already have an account?&nbsp;
+                <a class="underline text-white" href="/login">
+                    Log In
                 </a>
             </p>
         </div>

@@ -1,7 +1,7 @@
 import { initTRPC } from '@trpc/server';
 import * as z from 'zod';
 import { fetchGET } from './fetchAPI';
-import { TODOS } from 'types/index';
+import { TODOS } from 'types';
 
 export const trpc = initTRPC.create();
 
