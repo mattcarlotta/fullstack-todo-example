@@ -2,26 +2,14 @@
 import LogoIcon from '../icons/LogoIcon';
 import MainLayout from '../layouts/main.astro';
 import ShowTodos from '../components/layout/ShowTodos';
+import { caller } from './api/trpc/[trpc]';
 
 const token = Astro.cookies.get('SESSION_TOKEN')?.value;
 if (!token) {
     return Astro.redirect('/login');
 }
 
-const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/todo/all`, {
-    method: 'GET',
-    headers: {
-        cookie: `SESSION_TOKEN=${token}`
-    }
-});
-
-let error = '';
-if (!res.ok) {
-    error = await res.text();
-    console.error(error);
-}
-
-const todos = await res.json();
+const { todos, error } = await caller.getTodos({ token });
 ---
 
 <MainLayout description="Manage My Todos" showLogout>

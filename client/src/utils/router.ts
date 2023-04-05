@@ -1,7 +1,7 @@
 import { initTRPC } from '@trpc/server';
-import { TODOS } from 'types';
 import * as z from 'zod';
 import { fetchGET } from './fetchAPI';
+import { TODOS } from 'types/index';
 
 export const trpc = initTRPC.create();
 
@@ -22,8 +22,8 @@ const appRouter = trpc.router({
         .output(z.object({ todos: TODOS, error: z.string().optional() }))
         .query(async ({ input }) => {
             try {
-                const res = await fetchGET({ url: '/todo/all', headers: { cookie: `SESSION_TOKEN=${input.token}` } });
-                const todos = TODOS.parse(res?.data);
+                const data = await fetchGET({ url: '/todo/all', headers: { cookie: `SESSION_TOKEN=${input.token}` } });
+                const todos = TODOS.parse(data);
                 return { todos, error: '' }
             } catch (error) {
                 const e = logError(error);
