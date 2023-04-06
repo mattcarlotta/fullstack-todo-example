@@ -19,6 +19,7 @@ export const CREATE_TODO = Title.merge(Content).merge(Completed);
 export const EDIT_TODO = CREATE_TODO;
 export const TODO = Id.merge(Title).merge(Content).merge(Completed).merge(AuthorId).merge(CreatedAt).merge(UpdatedAt)
 export const TODOS = z.array(TODO)
+export type Todos = z.infer<typeof TODOS>
 
 export const SESSION_PAYLOAD = z.object({
     userId: z.string(),
