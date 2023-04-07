@@ -18,7 +18,6 @@ const { todos, error } = await caller.getTodos({ token });
             <LogoIcon className="h-[40px]" />
             <span class="text-[2.25rem] tracking-wider">My Todos</span>
         </h1>
-        {error && <h1>{error}</h1>}
-        <ShowTodos todos={todos} client:load />
+        {!error ? <ShowTodos todos={todos} client:load /> : <p>{error}</p>}
     </section>
 </MainLayout>

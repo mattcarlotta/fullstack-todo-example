@@ -51,7 +51,7 @@ router
                 path: '/',
                 expires: expDate,
                 secure: false,
-                httpOnly: true
+                httpOnly: false
             })
             .end();
     })

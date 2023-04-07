@@ -91,9 +91,12 @@ importers:
       '@astrojs/tailwind':
         specifier: ^3.1.1
         version: 3.1.1(astro@2.2.0)(tailwindcss@3.3.1)
+      '@trpc/client':
+        specifier: ^10.19.1
+        version: 10.19.1(@trpc/server@10.19.1)
       '@trpc/server':
-        specifier: ^10.18.0
-        version: 10.18.0
+        specifier: ^10.19.1
+        version: 10.19.1
       '@types/node':
         specifier: 18.15.11
         version: 18.15.11
@@ -103,6 +106,9 @@ importers:
       dotenv:
         specifier: ^16.0.3
         version: 16.0.3
+      js-cookie:
+        specifier: ^3.0.1
+        version: 3.0.1
       solid-js:
         specifier: ^1.7.2
         version: 1.7.2
@@ -119,6 +125,9 @@ importers:
       '@types/eslint':
         specifier: ^8.37.0
         version: 8.37.0
+      '@types/js-cookie':
+        specifier: ^3.0.3
+        version: 3.0.3
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.57.1
         version: 5.57.1(@typescript-eslint/parser@5.57.1)(eslint@8.37.0)(typescript@5.0.3)
@@ -974,8 +983,16 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /@trpc/server@10.18.0:
-    resolution: {integrity: sha512-nVMqdDIF9YLOeC3g6RdAvdCPqkHFjpshSqZGThZ+fyjiWSUXj2ZKCduhJFnY77TjtgODojeaaghmzcnjxb+Onw==}
+  /@trpc/client@10.19.1(@trpc/server@10.19.1):
+    resolution: {integrity: sha512-H61dIgoAjiA7/SfuHlUAsqshhaxOSSRFyEfaoBwYvXzLyno+fvQRUXvxpsC4A8IsDuNX2pxiggAK8AwTNKqIzg==}
+    peerDependencies:
+      '@trpc/server': 10.19.1
+    dependencies:
+      '@trpc/server': 10.19.1
+    dev: false
+
+  /@trpc/server@10.19.1:
+    resolution: {integrity: sha512-LAa8BQhMYJL+GU28cigOPKlEogCEBeff1wIKflnUj34ou1ythwTboe7Mi6rjDW3Q9EasP7s9YmqRv9Fkp8fL4Q==}
     dev: false
 
   /@tsconfig/node10@1.0.9:
@@ -1092,6 +1109,10 @@ packages:
     dependencies:
       '@types/unist': 2.0.6
     dev: false
+
+  /@types/js-cookie@3.0.3:
+    resolution: {integrity: sha512-Xe7IImK09HP1sv2M/aI+48a20VX+TdRJucfq4vfRVy6nWN8PYPOEnlMRSgxJAgYQIXJVL8dZ4/ilAM7dWNaOww==}
+    dev: true
 
   /@types/json-schema@7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
@@ -3231,6 +3252,11 @@ packages:
   /jiti@1.18.2:
     resolution: {integrity: sha512-QAdOptna2NYiSSpv0O/BwoHBSmz4YhpzJHyi+fnMRTXFjp7B8i/YG5Z8IfusxB1ufjcD2Sre1F3R+nX3fvy7gg==}
     hasBin: true
+
+  /js-cookie@3.0.1:
+    resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
+    engines: {node: '>=12'}
+    dev: false
 
   /js-sdsl@4.4.0:
     resolution: {integrity: sha512-FfVSdx6pJ41Oa+CF7RDaFmTnCaFhua+SNYQX74riGOpl96x+2jQCqEfQ2bnXu/5DPCqlRuiqyvTJM0Qjz26IVg==}

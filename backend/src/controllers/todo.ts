@@ -105,6 +105,9 @@ router
 
         return res
             .status(200)
-            .send(`The '${deletedTodo.title}' todo has been successfully deleted!`);
+            .json({
+                id: foundTodo.id,
+                message: `${deletedTodo.title} has been successfully deleted!`
+            })
     })
     .use('/todo');

@@ -1,7 +1,7 @@
 import { initTRPC } from '@trpc/server';
 import * as z from 'zod';
-import { fetchGET } from './fetchAPI';
-import { TODOS } from 'types';
+import { fetchDELETE, fetchGET } from './fetchAPI';
+import { Id, Message, RespError, TodosList, TODOS, Token } from 'types';
 
 export const trpc = initTRPC.create();
 
@@ -13,13 +13,8 @@ function logError(error: unknown) {
 
 const appRouter = trpc.router({
     getTodos: trpc.procedure
-        .input(
-            z
-                .object({
-                    token: z.string().optional()
-                })
-        )
-        .output(z.object({ todos: TODOS, error: z.string().optional() }))
+        .input(Token)
+        .output(TodosList.merge(RespError))
         .query(async ({ input }) => {
             try {
                 const data = await fetchGET({ url: '/todo/all', headers: { cookie: `SESSION_TOKEN=${input.token}` } });
@@ -28,6 +23,19 @@ const appRouter = trpc.router({
             } catch (error) {
                 const e = logError(error);
                 return { todos: [], error: e }
+            }
+        }),
+    deleteTodo: trpc.procedure
+        .input(Id.merge(Token))
+        .output(Id.merge(Message).merge(RespError))
+        .query(async ({ input }) => {
+            try {
+                const data = await fetchDELETE({ url: `/todo/delete/${input.id}`, headers: { cookie: `SESSION_TOKEN=${input.token}` } });
+                const result = Id.merge(Message).parse(data);
+                return { ...result, error: '' }
+            } catch (error) {
+                const e = logError(error);
+                return { id: '', message: '', error: e }
             }
         }),
     // backgroundInfo: trpc.procedure

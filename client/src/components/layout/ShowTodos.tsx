@@ -1,5 +1,8 @@
-import { For, Show, createSignal } from "solid-js"
-import type { Todos } from "types"
+import { For, Show, createSignal, onMount } from "solid-js"
+import Cookie from 'js-cookie'
+import type { TodoId, Todos } from "types"
+import ShowTodo from "./ShowTodo"
+import { client } from "../../utils/client"
 
 type ShowTodoProps = {
     todos?: Todos
@@ -8,15 +11,40 @@ type ShowTodoProps = {
 export default function ShowTodos(props: ShowTodoProps) {
     // eslint-disable-next-line solid/reactivity
     const [todos, setTodos] = createSignal(props.todos || [])
+    const [token, setToken] = createSignal('');
 
     const handleAddTodo = async () => {
         try {
             setTodos([])
         } catch (error) {
-
             console.error(error)
         }
     }
+
+    const handleEditToto = async (todo: any) => {
+        try {
+            setTodos([])
+        } catch (error) {
+            alert(error?.toString())
+        }
+    }
+
+    const handleDeleteTodo = async ({ id }: TodoId) => {
+        try {
+            const res = await client.deleteTodo.query({ id, token: token() })
+            if (res.error) throw res.error
+            setTodos(todos => todos.filter(todo => todo.id !== res.id))
+            alert(res.message)
+        } catch (error) {
+            console.log({ error })
+            alert(error?.toString())
+        }
+    }
+
+    onMount(() => {
+        const token = Cookie.get("SESSION_TOKEN");
+        setToken(token || '')
+    })
 
 
     return (
@@ -27,17 +55,7 @@ export default function ShowTodos(props: ShowTodoProps) {
                 </div>
                 <div class="mt-6 space-y-2">
                     <For each={todos()}>{(todo) => (
-                        <div class="rounded bg-primary-400 p-4 flex justify-between items-center">
-                            <div class="flex flex-col">
-                                <h2 class="text-2xl">{todo.title}</h2>
-                                <p>{todo.content}</p>
-                            </div>
-                            <div class="flex space-x-2">
-                                <button type="button">Edit</button>
-                                <button type="button">Complete</button>
-                                <button type="button">Delete</button>
-                            </div>
-                        </div>
+                        <ShowTodo todo={todo} handleEditTodo={handleEditToto} handleDeleteTodo={handleDeleteTodo} />
                     )}</For>
                 </div>
             </section>
