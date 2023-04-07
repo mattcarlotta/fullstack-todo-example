@@ -6,7 +6,7 @@ import { Id, Message, RespError, TodosList, TODOS, Token } from 'types';
 export const trpc = initTRPC.create();
 
 function logError(error: unknown) {
-    const e = error instanceof z.ZodError ? JSON.stringify(error, null, 2) : error?.toString();
+    const e = error instanceof z.ZodError ? error?.message : error?.toString();
     console.error(e);
     return e;
 }
@@ -35,7 +35,7 @@ const appRouter = trpc.router({
                 return { ...result, error: '' }
             } catch (error) {
                 const e = logError(error);
-                return { id: '', message: '', error: e }
+                throw e
             }
         }),
     // backgroundInfo: trpc.procedure

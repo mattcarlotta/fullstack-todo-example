@@ -32,12 +32,10 @@ export default function ShowTodos(props: ShowTodoProps) {
     const handleDeleteTodo = async ({ id }: TodoId) => {
         try {
             const res = await client.deleteTodo.query({ id, token: token() })
-            if (res.error) throw res.error
             setTodos(todos => todos.filter(todo => todo.id !== res.id))
             alert(res.message)
-        } catch (error) {
-            console.log({ error })
-            alert(error?.toString())
+        } catch (error: any) {
+            alert(error?.message)
         }
     }
 
