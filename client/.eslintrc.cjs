@@ -36,7 +36,8 @@ module.exports = {
             extends: ['plugin:solid/typescript'],
             rules: {
                 'no-extra-semi': 'off',
-                '@typescript-eslint/no-extra-semi': 'off'
+                '@typescript-eslint/no-extra-semi': 'off',
+                'solid/no-react-specific-props': 'off'
             }
         },
         {

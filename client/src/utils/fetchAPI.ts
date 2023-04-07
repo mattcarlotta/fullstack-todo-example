@@ -61,3 +61,7 @@ export function fetchDELETE(args: Pick<FetchAPIArgs, 'url' | 'headers' | 'body'>
 export function fetchPOST(args: Pick<FetchAPIArgs, 'url' | 'headers' | 'body'>) {
     return fetchAPI({ method: 'POST', ...args })
 }
+
+export function fetchPUT(args: Pick<FetchAPIArgs, 'url' | 'headers' | 'body'>) {
+    return fetchAPI({ method: 'PUT', ...args })
+}

@@ -1,7 +1,7 @@
 import { createStore } from 'solid-js/store';
-import { batch, createSignal } from 'solid-js';
+import { createSignal } from 'solid-js';
 import clsx from '../../utils/clsx';
-import type { Todos } from 'types';
+import type { Todo, Todos } from 'types';
 import { client } from '../../utils/client';
 
 type InputChangeEvent = InputEvent & {
@@ -24,18 +24,20 @@ type Store = {
 
 export type AddTodoFormProps = {
     token: string,
-    handleUpdateTodos: (todos: Todos) => void;
+    todo: Todo,
+    handleUpdateTodos: (updatedTodos: Todos) => void;
+    toggleEditForm: () => void;
 }
 
-export default function AddTodoForm(props: AddTodoFormProps) {
+export default function EditTodoForm(props: AddTodoFormProps) {
     const [store, setStore] = createStore<Store>({
-        title: { value: '', error: '' },
-        content: { value: '', error: '' },
+        title: { value: props.todo.title, error: '' },
+        content: { value: props.todo.content, error: '' },
         isSubmitting: false,
         formError: ''
     });
 
-    const [completed, setCompleted] = createSignal(false)
+    const [completed, setCompleted] = createSignal(props.todo.completed)
 
     const handleInputChange = (e: InputChangeEvent) => {
         setStore(e.target.name as keyof Store, { value: e.target.value, error: '' });
@@ -47,15 +49,9 @@ export default function AddTodoForm(props: AddTodoFormProps) {
         setStore('formError', '');
         setStore('isSubmitting', true);
         try {
-            const res = await client.createTodo.query({ title: store.title.value, content: store.content.value, completed: completed(), token: props.token })
+            const res = await client.updateTodo.query({ id: props.todo.id, title: store.title.value, content: store.content.value, completed: completed(), token: props.token })
             alert(res.message)
             props.handleUpdateTodos(res.todos)
-            batch(() => {
-                setStore('title', { value: '', error: '' });
-                setStore('content', { value: '', error: '' });
-                setStore('isSubmitting', false);
-                setCompleted(false);
-            })
         } catch (error: any) {
             setStore('formError', String(error));
             setStore('isSubmitting', false);
@@ -109,7 +105,18 @@ export default function AddTodoForm(props: AddTodoFormProps) {
                             />
                         </label>
                     </div>
-                    <div>
+                    <div class="flex space-x-2">
+                        <button
+                            disabled={store.isSubmitting}
+                            type="button"
+                            onClick={props.toggleEditForm}
+                            class={clsx(
+                                store.isSubmitting ? 'text-gray' : 'text-white',
+                                'bg-red-500 w-full p-2 rounded'
+                            )}
+                        >
+                            Cancel
+                        </button>
                         <button
                             disabled={store.isSubmitting}
                             class={clsx(
@@ -118,7 +125,7 @@ export default function AddTodoForm(props: AddTodoFormProps) {
                             )}
                             type="submit"
                         >
-                            Create
+                            Update
                         </button>
                     </div>
                     {store.formError && <p class="text-fire">{store.formError}</p>}
@@ -127,4 +134,5 @@ export default function AddTodoForm(props: AddTodoFormProps) {
         </div >
     );
 }
+
 

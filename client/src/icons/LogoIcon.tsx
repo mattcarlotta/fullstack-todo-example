@@ -1,7 +1,7 @@
-export default function LogoIcon({ className }: { className: string }) {
+export default function LogoIcon(props: { className: string }) {
     return (
         <svg
-            class={className}
+            class={props.className}
             fill="currentColor"
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"

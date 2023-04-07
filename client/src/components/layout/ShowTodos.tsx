@@ -3,6 +3,7 @@ import Cookie from 'js-cookie'
 import type { TodoId, Todos } from "types"
 import ShowTodo from "./ShowTodo"
 import { client } from "../../utils/client"
+import AddTodoForm from "./AddTodoForm"
 
 type ShowTodoProps = {
     todos?: Todos
@@ -13,20 +14,8 @@ export default function ShowTodos(props: ShowTodoProps) {
     const [todos, setTodos] = createSignal(props.todos || [])
     const [token, setToken] = createSignal('');
 
-    const handleAddTodo = async () => {
-        try {
-            setTodos([])
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    const handleEditToto = async (todo: any) => {
-        try {
-            setTodos([])
-        } catch (error) {
-            alert(error?.toString())
-        }
+    const handleUpdateTodos = (newTodos: Todos) => {
+        setTodos(newTodos)
     }
 
     const handleDeleteTodo = async ({ id }: TodoId) => {
@@ -46,14 +35,13 @@ export default function ShowTodos(props: ShowTodoProps) {
 
 
     return (
-        <Show when={todos().length} fallback={<p>Add Todo</p>}>
+        <Show when={todos().length} fallback={<AddTodoForm token={token()} handleUpdateTodos={handleUpdateTodos} />
+        }>
             <section class="flex flex-col justify-center">
-                <div class="mt-6 bg-primary-400 p-4 rounded">
-                    <h1 class="text-3xl">Add Todo</h1>
-                </div>
+                <AddTodoForm token={token()} handleUpdateTodos={handleUpdateTodos} />
                 <div class="mt-6 space-y-2">
                     <For each={todos()}>{(todo) => (
-                        <ShowTodo todo={todo} handleEditTodo={handleEditToto} handleDeleteTodo={handleDeleteTodo} />
+                        <ShowTodo token={token()} todo={todo} handleUpdateTodos={handleUpdateTodos} handleDeleteTodo={handleDeleteTodo} />
                     )}</For>
                 </div>
             </section>

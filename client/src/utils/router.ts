@@ -1,7 +1,7 @@
 import { initTRPC } from '@trpc/server';
 import * as z from 'zod';
-import { fetchDELETE, fetchGET } from './fetchAPI';
-import { Id, Message, RespError, TodosList, TODOS, Token } from 'types';
+import { fetchDELETE, fetchGET, fetchPOST, fetchPUT } from './fetchAPI';
+import { Id, Message, RespError, TodosList, TODOS, Token, CREATE_TODO, EDIT_TODO, Completed } from 'types';
 
 export const trpc = initTRPC.create();
 
@@ -25,6 +25,19 @@ const appRouter = trpc.router({
                 return { todos: [], error: e }
             }
         }),
+    createTodo: trpc.procedure
+        .input(CREATE_TODO.merge(Token))
+        .output(TodosList.merge(Message).merge(RespError))
+        .query(async ({ input }) => {
+            try {
+                const data = await fetchPOST({ url: `/todo/create`, body: { ...input }, headers: { 'Content-Type': 'application/json', cookie: `SESSION_TOKEN=${input.token}` } });
+                const result = TodosList.merge(Message).parse(data);
+                return { ...result, error: '' }
+            } catch (error) {
+                const e = logError(error);
+                throw e
+            }
+        }),
     deleteTodo: trpc.procedure
         .input(Id.merge(Token))
         .output(Id.merge(Message).merge(RespError))
@@ -32,6 +45,32 @@ const appRouter = trpc.router({
             try {
                 const data = await fetchDELETE({ url: `/todo/delete/${input.id}`, headers: { cookie: `SESSION_TOKEN=${input.token}` } });
                 const result = Id.merge(Message).parse(data);
+                return { ...result, error: '' }
+            } catch (error) {
+                const e = logError(error);
+                throw e
+            }
+        }),
+    completeTodo: trpc.procedure
+        .input(Id.merge(Token))
+        .output(TodosList.merge(Message).merge(RespError))
+        .query(async ({ input }) => {
+            try {
+                const data = await fetchPUT({ url: `/todo/complete/${input.id}`, body: { ...input }, headers: { 'Content-Type': 'application/json', cookie: `SESSION_TOKEN=${input.token}` } });
+                const result = TodosList.merge(Message).parse(data);
+                return { ...result, error: '' }
+            } catch (error) {
+                const e = logError(error);
+                throw e
+            }
+        }),
+    updateTodo: trpc.procedure
+        .input(Id.merge(EDIT_TODO).merge(Token))
+        .output(TodosList.merge(Message).merge(RespError))
+        .query(async ({ input }) => {
+            try {
+                const data = await fetchPUT({ url: `/todo/update/${input.id}`, body: { ...input }, headers: { 'Content-Type': 'application/json', cookie: `SESSION_TOKEN=${input.token}` } });
+                const result = TodosList.merge(Message).parse(data);
                 return { ...result, error: '' }
             } catch (error) {
                 const e = logError(error);
