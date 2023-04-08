@@ -50,7 +50,11 @@ export default function RegisterForm() {
                     'Content-Type': 'application/json'
                 },
                 method: 'POST',
-                body: JSON.stringify({ email: store.email.value, name: store.name.value, password: store.password.value }),
+                body: JSON.stringify({
+                    email: store.email.value,
+                    name: store.name.value,
+                    password: store.password.value
+                })
             });
             if (!res.ok) {
                 const error = await res.text();
@@ -65,19 +69,19 @@ export default function RegisterForm() {
     };
 
     return (
-        <div class="flex flex-col space-y-8 p-8 bg-primary-400 rounded text-white w-full max-w-screen-xs">
+        <div class="flex w-full max-w-screen-xs flex-col space-y-8 rounded bg-primary-400 p-8 text-white">
             <form class="flex flex-col space-y-2" onSubmit={handleSubmit}>
-                <h1 class="flex justify-center items-center text-white">
+                <h1 class="flex items-center justify-center text-white">
                     <LogoIcon className="h-[40px]" />
                     <span class="text-2xl uppercase leading-none tracking-wider">Todo App</span>
                 </h1>
-                <h2 class="text-lg text-center">Register</h2>
-                <div class="flex flex-col space-y-1 h-24">
+                <h2 class="text-center text-lg">Register</h2>
+                <div class="flex h-24 flex-col space-y-1">
                     <label class="block" html-for="user-name">
                         Dipslay Name
                     </label>
                     <input
-                        class="px-1.5 py-2 rounded text-black"
+                        class="rounded px-1.5 py-2 text-black"
                         type="text"
                         name="name"
                         id="user-name"
@@ -87,12 +91,12 @@ export default function RegisterForm() {
                     />
                     {store.name.error && <p>{store.name.error}</p>}
                 </div>
-                <div class="flex flex-col space-y-1 h-24">
+                <div class="flex h-24 flex-col space-y-1">
                     <label class="block" html-for="email">
                         Email
                     </label>
                     <input
-                        class="px-1.5 py-2 rounded text-black"
+                        class="rounded px-1.5 py-2 text-black"
                         type="email"
                         name="email"
                         id="email"
@@ -102,12 +106,12 @@ export default function RegisterForm() {
                     />
                     {store.email.error && <p>{store.email.error}</p>}
                 </div>
-                <div class="flex flex-col space-y-1 h-32">
+                <div class="flex h-32 flex-col space-y-1">
                     <label class="block" html-for="password">
                         Password
                     </label>
                     <input
-                        class="px-1.5 py-2 rounded text-black"
+                        class="rounded px-1.5 py-2 text-black"
                         type={passwordVisible() ? 'text' : 'password'}
                         name="password"
                         id="password"
@@ -131,7 +135,7 @@ export default function RegisterForm() {
                         disabled={store.isSubmitting}
                         class={clsx(
                             store.isSubmitting ? 'text-gray' : 'text-primary',
-                            'w-full bg-white p-2 rounded'
+                            'w-full rounded bg-white p-2'
                         )}
                         type="submit"
                     >
@@ -143,7 +147,7 @@ export default function RegisterForm() {
             <hr class="border-t border-gray-300" />
             <p>
                 Already have an account?&nbsp;
-                <a class="underline text-white" href="/login">
+                <a class="text-white underline" href="/login">
                     Log In
                 </a>
             </p>

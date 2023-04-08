@@ -24,9 +24,9 @@ type Store = {
 };
 
 export type AddTodoFormProps = {
-    token: string,
+    token: string;
     handleUpdateTodos: (todos: Todos) => void;
-}
+};
 
 export default function AddTodoForm(props: AddTodoFormProps) {
     const [store, setStore] = createStore<Store>({
@@ -36,7 +36,7 @@ export default function AddTodoForm(props: AddTodoFormProps) {
         formError: ''
     });
 
-    const [completed, setCompleted] = createSignal(false)
+    const [completed, setCompleted] = createSignal(false);
 
     const handleInputChange = (e: InputChangeEvent) => {
         setStore(e.target.name as keyof Store, { value: e.target.value, error: '' });
@@ -48,15 +48,20 @@ export default function AddTodoForm(props: AddTodoFormProps) {
         setStore('formError', '');
         setStore('isSubmitting', true);
         try {
-            const res = await client.createTodo.query({ title: store.title.value, content: store.content.value, completed: completed(), token: props.token })
-            dispatchToastEvent({ type: 'success', message: res.message })
-            props.handleUpdateTodos(res.todos)
+            const res = await client.createTodo.query({
+                title: store.title.value,
+                content: store.content.value,
+                completed: completed(),
+                token: props.token
+            });
+            dispatchToastEvent({ type: 'success', message: res.message });
+            props.handleUpdateTodos(res.todos);
             batch(() => {
                 setStore('title', { value: '', error: '' });
                 setStore('content', { value: '', error: '' });
                 setStore('isSubmitting', false);
                 setCompleted(false);
-            })
+            });
         } catch (error: any) {
             setStore('formError', String(error));
             setStore('isSubmitting', false);
@@ -64,16 +69,16 @@ export default function AddTodoForm(props: AddTodoFormProps) {
     };
 
     return (
-        <div class="flex flex-col space-y-4 p-8 bg-primary-400 rounded text-white">
+        <div class="flex flex-col space-y-4 rounded bg-primary-400 p-8 text-white">
             <h1 class="text-3xl">Add Todo</h1>
             <div class="flex space-x-2">
                 <form class="w-full" onSubmit={handleSubmit}>
-                    <div class="flex flex-col space-y-1 h-24">
+                    <div class="flex h-24 flex-col space-y-1">
                         <label class="block" html-for="title">
                             Title
                         </label>
                         <input
-                            class="px-1.5 py-2 rounded text-black"
+                            class="rounded px-1.5 py-2 text-black"
                             type="text"
                             name="title"
                             id="title"
@@ -83,12 +88,12 @@ export default function AddTodoForm(props: AddTodoFormProps) {
                         />
                         {store.title.error && <p>{store.title.error}</p>}
                     </div>
-                    <div class="flex flex-col space-y-1 h-48">
+                    <div class="flex h-48 flex-col space-y-1">
                         <label class="block" html-for="content">
                             Content
                         </label>
                         <textarea
-                            class="px-1.5 py-2 rounded text-black"
+                            class="rounded px-1.5 py-2 text-black"
                             name="content"
                             id="content"
                             rows="4"
@@ -99,7 +104,7 @@ export default function AddTodoForm(props: AddTodoFormProps) {
                         />
                         {store.content.error && <p>{store.content.error}</p>}
                     </div>
-                    <div class="flex flex-col space-y-1 h-10">
+                    <div class="flex h-10 flex-col space-y-1">
                         <label class="flex space-x-1">
                             <p>Completed</p>
                             <input
@@ -115,7 +120,7 @@ export default function AddTodoForm(props: AddTodoFormProps) {
                             disabled={store.isSubmitting}
                             class={clsx(
                                 store.isSubmitting ? 'text-gray' : 'text-primary',
-                                'w-full bg-white p-2 rounded'
+                                'w-full rounded bg-white p-2'
                             )}
                             type="submit"
                         >
@@ -124,8 +129,7 @@ export default function AddTodoForm(props: AddTodoFormProps) {
                     </div>
                     {store.formError && <p class="text-fire">{store.formError}</p>}
                 </form>
-            </div >
-        </div >
+            </div>
+        </div>
     );
 }
-

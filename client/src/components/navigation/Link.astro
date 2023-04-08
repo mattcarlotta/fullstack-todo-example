@@ -1,14 +1,14 @@
 ---
-import type { AriaLabel, Href, OptionalClassName } from '../../types';
 import clsx from '../../utils/clsx';
 
-type Props = AriaLabel &
-    Href &
-    OptionalClassName & {
-        asHref?: string;
-        noFocusRing?: boolean;
-        underline?: boolean;
-    };
+type Props = {
+    ariaLabel: string;
+    href: string;
+    className?: string;
+    asHref?: string;
+    noFocusRing?: boolean;
+    underline?: boolean;
+};
 
 const { ariaLabel, className, href, noFocusRing, underline } = Astro.props;
 ---

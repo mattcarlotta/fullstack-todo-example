@@ -24,11 +24,11 @@ type Store = {
 };
 
 export type AddTodoFormProps = {
-    token: string,
-    todo: Todo,
+    token: string;
+    todo: Todo;
     handleUpdateTodos: (updatedTodos: Todos) => void;
     toggleEditForm: () => void;
-}
+};
 
 export default function EditTodoForm(props: AddTodoFormProps) {
     const [store, setStore] = createStore<Store>({
@@ -38,7 +38,7 @@ export default function EditTodoForm(props: AddTodoFormProps) {
         formError: ''
     });
 
-    const [completed, setCompleted] = createSignal(props.todo.completed)
+    const [completed, setCompleted] = createSignal(props.todo.completed);
 
     const handleInputChange = (e: InputChangeEvent) => {
         setStore(e.target.name as keyof Store, { value: e.target.value, error: '' });
@@ -50,9 +50,15 @@ export default function EditTodoForm(props: AddTodoFormProps) {
         setStore('formError', '');
         setStore('isSubmitting', true);
         try {
-            const res = await client.updateTodo.query({ id: props.todo.id, title: store.title.value, content: store.content.value, completed: completed(), token: props.token })
+            const res = await client.updateTodo.query({
+                id: props.todo.id,
+                title: store.title.value,
+                content: store.content.value,
+                completed: completed(),
+                token: props.token
+            });
             dispatchToastEvent({ type: 'success', message: res.message });
-            props.handleUpdateTodos(res.todos)
+            props.handleUpdateTodos(res.todos);
         } catch (error: any) {
             setStore('formError', String(error));
             setStore('isSubmitting', false);
@@ -60,16 +66,16 @@ export default function EditTodoForm(props: AddTodoFormProps) {
     };
 
     return (
-        <div class="flex flex-col space-y-4 p-8 bg-primary-400 rounded text-white">
+        <div class="flex flex-col space-y-4 rounded bg-primary-400 p-8 text-white">
             <h1 class="text-3xl">Add Todo</h1>
             <div class="flex space-x-2">
                 <form class="w-full" onSubmit={handleSubmit}>
-                    <div class="flex flex-col space-y-1 h-24">
+                    <div class="flex h-24 flex-col space-y-1">
                         <label class="block" html-for="title">
                             Title
                         </label>
                         <input
-                            class="px-1.5 py-2 rounded text-black"
+                            class="rounded px-1.5 py-2 text-black"
                             type="text"
                             name="title"
                             id="title"
@@ -79,12 +85,12 @@ export default function EditTodoForm(props: AddTodoFormProps) {
                         />
                         {store.title.error && <p>{store.title.error}</p>}
                     </div>
-                    <div class="flex flex-col space-y-1 h-48">
+                    <div class="flex h-48 flex-col space-y-1">
                         <label class="block" html-for="content">
                             Content
                         </label>
                         <textarea
-                            class="px-1.5 py-2 rounded text-black"
+                            class="rounded px-1.5 py-2 text-black"
                             name="content"
                             id="content"
                             rows="4"
@@ -95,7 +101,7 @@ export default function EditTodoForm(props: AddTodoFormProps) {
                         />
                         {store.content.error && <p>{store.content.error}</p>}
                     </div>
-                    <div class="flex flex-col space-y-1 h-10">
+                    <div class="flex h-10 flex-col space-y-1">
                         <label class="flex space-x-1">
                             <p>Completed</p>
                             <input
@@ -113,7 +119,7 @@ export default function EditTodoForm(props: AddTodoFormProps) {
                             onClick={props.toggleEditForm}
                             class={clsx(
                                 store.isSubmitting ? 'text-gray' : 'text-white',
-                                'bg-red-500 w-full p-2 rounded'
+                                'w-full rounded bg-red-500 p-2'
                             )}
                         >
                             Cancel
@@ -122,7 +128,7 @@ export default function EditTodoForm(props: AddTodoFormProps) {
                             disabled={store.isSubmitting}
                             class={clsx(
                                 store.isSubmitting ? 'text-gray' : 'text-primary',
-                                'w-full bg-white p-2 rounded'
+                                'w-full rounded bg-white p-2'
                             )}
                             type="submit"
                         >
@@ -131,9 +137,7 @@ export default function EditTodoForm(props: AddTodoFormProps) {
                     </div>
                     {store.formError && <p class="text-fire">{store.formError}</p>}
                 </form>
-            </div >
-        </div >
+            </div>
+        </div>
     );
 }
-
-

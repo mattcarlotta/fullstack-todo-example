@@ -15,8 +15,8 @@ const { todos, error } = await caller.getTodos({ token });
 
 <MainLayout description="Manage My Todos" showLogout>
     <Toast client:load />
-    <section class="min-h-body max-w-screen-md mx-auto">
-        <h1 class="flex justify-center items-center space-x-2 text-white mb-8">
+    <section class="mx-auto min-h-body max-w-screen-md">
+        <h1 class="mb-8 flex items-center justify-center space-x-2 text-white">
             <LogoIcon className="h-[40px]" />
             <span class="text-[2.25rem] tracking-wider">My Todos</span>
         </h1>

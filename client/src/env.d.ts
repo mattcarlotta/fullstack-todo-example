@@ -1,7 +1,5 @@
 /// <reference types="astro/client" />
 /* eslint-disable */
-import { ToastEvent } from "./toast";
-
 interface ImportMetaEnv {
     readonly PUBLIC_API_URL: string;
     readonly DOMAIN: string;
@@ -12,4 +10,3 @@ interface ImportMetaEnv {
 interface ImportMeta {
     readonly env: ImportMetaEnv;
 }
-

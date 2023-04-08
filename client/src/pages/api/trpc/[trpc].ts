@@ -11,6 +11,6 @@ export const all: APIRoute = ({ request }) => {
     });
 };
 
-export type AppRouter = typeof router
+export type AppRouter = typeof router;
 
 export const caller = router.createCaller({});

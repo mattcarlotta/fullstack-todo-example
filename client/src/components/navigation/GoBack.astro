@@ -1,9 +1,11 @@
 ---
 import GoHomeIcon from '../../icons/GoHomeIcon.astro';
-import type { Href, Title } from '../../types';
 import Link from './Link.astro';
 
-type Props = Href & Title;
+type Props = {
+    href: string;
+    title: string;
+};
 
 const { href, title } = Astro.props;
 ---

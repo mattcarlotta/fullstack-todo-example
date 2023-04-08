@@ -61,19 +61,19 @@ export default function LoginForm() {
     };
 
     return (
-        <div class="flex flex-col space-y-8 p-8 bg-primary-400 rounded text-white w-full max-w-screen-xs">
+        <div class="flex w-full max-w-screen-xs flex-col space-y-8 rounded bg-primary-400 p-8 text-white">
             <form class="flex flex-col space-y-2" onSubmit={handleSubmit}>
-                <h1 class="flex justify-center items-center text-white">
+                <h1 class="flex items-center justify-center text-white">
                     <LogoIcon className="h-[40px]" />
                     <span class="text-2xl uppercase leading-none tracking-wider">Todo App</span>
                 </h1>
-                <h2 class="text-lg text-center">Log In</h2>
-                <div class="flex flex-col space-y-1 h-24">
+                <h2 class="text-center text-lg">Log In</h2>
+                <div class="flex h-24 flex-col space-y-1">
                     <label class="block" html-for="email">
                         Email
                     </label>
                     <input
-                        class="px-1.5 py-2 rounded text-black"
+                        class="rounded px-1.5 py-2 text-black"
                         type="email"
                         name="email"
                         id="email"
@@ -83,12 +83,12 @@ export default function LoginForm() {
                     />
                     {store.email.error && <p>{store.email.error}</p>}
                 </div>
-                <div class="flex flex-col space-y-1 h-32">
+                <div class="flex h-32 flex-col space-y-1">
                     <label class="block" html-for="password">
                         Password
                     </label>
                     <input
-                        class="px-1.5 py-2 rounded text-black"
+                        class="rounded px-1.5 py-2 text-black"
                         type={passwordVisible() ? 'text' : 'password'}
                         name="password"
                         id="password"
@@ -111,7 +111,7 @@ export default function LoginForm() {
                         disabled={store.isSubmitting}
                         class={clsx(
                             store.isSubmitting ? 'text-gray' : 'text-primary',
-                            'w-full bg-white p-2 rounded'
+                            'w-full rounded bg-white p-2'
                         )}
                         type="submit"
                     >
@@ -123,7 +123,7 @@ export default function LoginForm() {
             <hr class="border-t border-gray-300" />
             <p>
                 Don't have an account?&nbsp;
-                <a class="underline text-white" href="/signup">
+                <a class="text-white underline" href="/signup">
                     Sign Up
                 </a>
             </p>
