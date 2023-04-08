@@ -34,18 +34,36 @@ export default function ShowTodo(props: ShowTodoProps) {
     }
 
     return (
-        <Show when={!showEditForm()} fallback={<EditTodoForm toggleEditForm={toggleEditForm} todo={props.todo} token={props.token} handleUpdateTodos={props.handleUpdateTodos} />}>
-            <div class="rounded bg-primary-400 p-4 flex justify-between items-center">
-                <div class={clsx(props.todo.completed && "line-through text-gray-400", "flex flex-col space-y-1")}>
-                    <h2 class="text-2xl">{props.todo.title}{props.todo.completed && <CompleteIcon className="w-8 inline text-green-500" />}
+        <Show
+            when={!showEditForm()}
+            fallback={<EditTodoForm toggleEditForm={toggleEditForm} todo={props.todo} token={props.token} handleUpdateTodos={props.handleUpdateTodos} />}
+        >
+            <div class="rounded bg-primary-400 p-4">
+                <div class={clsx(props.todo.completed && "line-through text-gray-400", "flex space-x-1")}>
+                    <h2 class="flex-1 text-3xl line-clamp-1 break-all">
+                        {props.todo.title}{props.todo.completed && <CompleteIcon className="w-8 inline text-green-500" />}
                     </h2>
-                    <p>{props.todo.content}</p>
-                    <p class="text-sm">{new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(props.todo.createdAt))} (updated {timeSince(props.todo.updatedAt)})</p>
+                    <div class="flex items-center space-x-2">
+                        <button type="button" class="p-1 rounded hover:bg-primary-800" onClick={toggleEditForm}>
+                            <EditIcon className="text-yellow-500" />
+                        </button>
+                        {!props.todo.completed &&
+                            <button type="button" class="p-1 rounded hover:bg-primary-800" onClick={() => completedTodo({ id: props.todo.id })}>
+                                <CompleteIcon className="text-green-500" />
+                            </button>
+                        }
+                        <button type="button" class="p-1 rounded hover:bg-primary-800" onClick={() => props.handleDeleteTodo({ id: props.todo.id })}>
+                            <DeleteIcon className="text-red-500" />
+                        </button>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <button type="button" onClick={toggleEditForm}><EditIcon className="w-9" /></button>
-                    {!props.todo.completed && <button type="button" onClick={() => completedTodo({ id: props.todo.id })}><CompleteIcon className="w-12 text-green-500" /></button>}
-                    <button type="button" onClick={() => props.handleDeleteTodo({ id: props.todo.id })}><DeleteIcon className="w-10 text-red-500" /></button>
+                <div class={clsx(props.todo.completed && "line-through text-gray-400")}>
+                    <p class="break-all">{props.todo.content}</p>
+                    <p class="text-sm">
+                        {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' })
+                            .format(new Date(props.todo.createdAt))}
+                        (updated {timeSince(props.todo.updatedAt)})
+                    </p>
                 </div>
             </div>
         </Show>

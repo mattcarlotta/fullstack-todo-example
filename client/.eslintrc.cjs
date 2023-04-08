@@ -2,7 +2,8 @@ module.exports = {
     env: {
         browser: true,
         es2022: true,
-        node: true
+        node: true,
+        NodeJS: true
     },
     extends: ['eslint:recommended', 'plugin:astro/recommended'],
     parserOptions: {

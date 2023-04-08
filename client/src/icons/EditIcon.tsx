@@ -1,6 +1,13 @@
 export default function EditIcon(props: { className: string }) {
     return (
-        <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" class={props.className} role="img" version="1.1" viewBox="0 0 700 700">
+        <svg
+            class={props.className}
+            fill="currentColor"
+            height="1.5em"
+            width="1.5em"
+            role="img"
+            viewBox="0 0 700 700"
+        >
             <title>Edit Todo</title>
             <g fill-rule="evenodd">
                 <path d="m116.67 70c0-12.887 10.445-23.332 23.332-23.332h210v46.664h-186.67v373.34h373.34v-186.67h46.664v210c0 12.887-10.445 23.332-23.332 23.332h-420c-12.887 0-23.332-10.445-23.332-23.332z" />

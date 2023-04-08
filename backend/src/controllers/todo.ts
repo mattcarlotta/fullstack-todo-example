@@ -23,7 +23,7 @@ router
             where: {
                 authorId: userId
             },
-            orderBy: [{ completed: 'asc' }, { updatedAt: 'desc' }]
+            orderBy: [{ completed: 'asc' }, { createdAt: 'desc' }]
         });
 
         return res.status(201).json({
@@ -38,7 +38,7 @@ router
             where: {
                 authorId: userId
             },
-            orderBy: [{ completed: 'asc' }, { updatedAt: 'desc' }]
+            orderBy: [{ completed: 'asc' }, { createdAt: 'desc' }]
         });
 
         return res.status(200).send(todos);
@@ -81,7 +81,7 @@ router
             where: {
                 authorId: userId
             },
-            orderBy: [{ completed: 'asc' }, { updatedAt: 'desc' }]
+            orderBy: [{ completed: 'asc' }, { createdAt: 'desc' }]
         });
 
         return res.status(200).json({
@@ -113,7 +113,7 @@ router
             where: {
                 authorId: userId
             },
-            orderBy: [{ completed: 'asc' }, { updatedAt: 'desc' }]
+            orderBy: [{ completed: 'asc' }, { createdAt: 'desc' }]
         });
 
         return res.status(200).json({

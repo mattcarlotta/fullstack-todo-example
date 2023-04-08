@@ -22,26 +22,56 @@ export function dispatchToastEvent(event: ToastEvent) {
 }
 
 export default function Toast() {
+    /* eslint-disable-next-line prefer-const */
+    let toastRef: HTMLDivElement | undefined = undefined;
+    let timerRef: NodeJS.Timeout | null = null;
     const [toast, setToast] = createStore<ToastNotifcationStore>({
         show: false,
         message: '',
         type: '',
     })
 
-    const resetToast = () => {
-        batch(() => {
-            setToast('show', false)
-            setToast('message', "")
-            setToast('type', "")
-        })
+    const setTimer = () => {
+        timerRef = setTimeout(() => resetToast(), 3000);
+    }
 
+    const clearTimer = () => {
+        if (timerRef) {
+            clearInterval(timerRef);
+            timerRef = null;
+            toastRef = undefined;
+        }
+    }
+
+    const resetToast = () => {
+        if (toast.show) {
+            clearTimer();
+            batch(() => {
+                setToast('show', false)
+                setToast('message', "")
+                setToast('type', "")
+            })
+        }
+    }
+
+    const handleMouseOver = () => {
+        if (toastRef && toast.show) {
+            clearTimer();
+        }
+    }
+
+    const handleMouseLeave = () => {
+        if (!timerRef && toastRef && toast.show) {
+            setTimer();
+        }
     }
 
     const handleToastNotification = (event: Event) => {
         const { detail } = event as ReceivedToastEvent;
-        if (toast.show) {
-            resetToast();
-        }
+
+        resetToast();
+
+        setTimer();
 
         batch(() => {
             setToast('type', detail.type)
@@ -54,6 +84,7 @@ export default function Toast() {
         window.addEventListener('toast', handleToastNotification);
 
         onCleanup(() => {
+            if (timerRef) clearInterval(timerRef)
             window.removeEventListener('toast', handleToastNotification);
         });
     });
@@ -61,10 +92,10 @@ export default function Toast() {
 
     return (
         <Show when={toast.show} fallback={null}>
-            <div class="rounded bg-green-500 fixed top-10 right-10 w-72">
-                <div class="relative flex space-x-2 p-4 font-bold">
-                    <h1>{toast.message}</h1>
-                    <button class="absolute top-2 right-2" type="button" onClick={resetToast}>
+            <div onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave} ref={toastRef} class="rounded bg-green-500 fixed top-4 right-10 w-72">
+                <div class="flex space-x-2 p-4 font-bold">
+                    <h1 class="flex-1 break-all">{toast.message}</h1>
+                    <button class="flex-initial self-start" type="button" onClick={resetToast}>
                         <CloseIcon className="h-6 text-red-500" />
                     </button>
                 </div>

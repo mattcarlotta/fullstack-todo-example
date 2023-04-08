@@ -97,9 +97,6 @@ importers:
       '@trpc/server':
         specifier: ^10.19.1
         version: 10.19.1
-      '@types/node':
-        specifier: 18.15.11
-        version: 18.15.11
       astro:
         specifier: ^2.2.0
         version: 2.2.0(@types/node@18.15.11)
@@ -128,6 +125,9 @@ importers:
       '@types/js-cookie':
         specifier: ^3.0.3
         version: 3.0.3
+      '@types/node':
+        specifier: 18.15.11
+        version: 18.15.11
       '@typescript-eslint/eslint-plugin':
         specifier: ^5.57.1
         version: 5.57.1(@typescript-eslint/parser@5.57.1)(eslint@8.37.0)(typescript@5.0.3)
