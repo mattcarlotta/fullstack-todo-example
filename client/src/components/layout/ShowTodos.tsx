@@ -4,6 +4,7 @@ import type { TodoId, Todos } from "types"
 import ShowTodo from "./ShowTodo"
 import { client } from "../../utils/client"
 import AddTodoForm from "./AddTodoForm"
+import { dispatchToastEvent } from "./Toast"
 
 type ShowTodoProps = {
     todos?: Todos
@@ -22,9 +23,9 @@ export default function ShowTodos(props: ShowTodoProps) {
         try {
             const res = await client.deleteTodo.query({ id, token: token() })
             setTodos(todos => todos.filter(todo => todo.id !== res.id))
-            alert(res.message)
+            dispatchToastEvent({ type: 'success', message: res.message });
         } catch (error: any) {
-            alert(error?.message)
+            dispatchToastEvent({ type: 'error', message: error?.message });
         }
     }
 

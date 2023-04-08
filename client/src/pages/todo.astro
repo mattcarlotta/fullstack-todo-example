@@ -3,6 +3,7 @@ import LogoIcon from '../icons/LogoIcon';
 import MainLayout from '../layouts/main.astro';
 import ShowTodos from '../components/layout/ShowTodos';
 import { caller } from './api/trpc/[trpc]';
+import Toast from '../components/layout/Toast';
 
 const token = Astro.cookies.get('SESSION_TOKEN')?.value;
 if (!token) {
@@ -13,6 +14,7 @@ const { todos, error } = await caller.getTodos({ token });
 ---
 
 <MainLayout description="Manage My Todos" showLogout>
+    <Toast client:load />
     <section class="min-h-body max-w-screen-md mx-auto">
         <h1 class="flex justify-center items-center space-x-2 text-white mb-8">
             <LogoIcon className="h-[40px]" />

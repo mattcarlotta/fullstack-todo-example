@@ -3,6 +3,7 @@ import { createSignal } from 'solid-js';
 import clsx from '../../utils/clsx';
 import type { Todo, Todos } from 'types';
 import { client } from '../../utils/client';
+import { dispatchToastEvent } from './Toast';
 
 type InputChangeEvent = InputEvent & {
     currentTarget: HTMLInputElement | HTMLTextAreaElement;
@@ -50,7 +51,7 @@ export default function EditTodoForm(props: AddTodoFormProps) {
         setStore('isSubmitting', true);
         try {
             const res = await client.updateTodo.query({ id: props.todo.id, title: store.title.value, content: store.content.value, completed: completed(), token: props.token })
-            alert(res.message)
+            dispatchToastEvent({ type: 'success', message: res.message });
             props.handleUpdateTodos(res.todos)
         } catch (error: any) {
             setStore('formError', String(error));

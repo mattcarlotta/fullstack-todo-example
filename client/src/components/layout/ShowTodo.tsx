@@ -7,6 +7,7 @@ import DeleteIcon from "../../icons/DeleteIcon";
 import EditTodoForm from "./EditTodoForm";
 import timeSince from "../../utils/timeSince";
 import { client } from "../../utils/client";
+import { dispatchToastEvent } from "./Toast";
 
 export type ShowTodoProps = {
     token: string
@@ -25,10 +26,10 @@ export default function ShowTodo(props: ShowTodoProps) {
     const completedTodo = async ({ id }: TodoId) => {
         try {
             const res = await client.completeTodo.query({ id, token: props.token })
-            alert(res.message)
+            dispatchToastEvent({ type: 'success', message: res.message });
             props.handleUpdateTodos(res.todos)
         } catch (error: any) {
-            alert(error?.message);
+            dispatchToastEvent({ type: 'error', message: error?.message });
         }
     }
 
