@@ -1,11 +1,12 @@
-import app, { todo } from '../app';
-import { CREATE_TODO, Completed, EDIT_TODO, Id } from 'types';
+import { CREATE_TODO, EDIT_TODO, Id } from 'types';
+import { AppRouter, todo } from '../app';
 import requireAuth from '../strategies/requireAuth';
 import { ResponseError, ValidationError } from '../utils/error';
 
-const router = app.createRouter();
+const router = new AppRouter();
 
 router
+    .prefixPathsWith('/todo')
     .post('/create', requireAuth, async (req, res) => {
         const userId = req.userId;
         const result = CREATE_TODO.safeParse(req.body);
@@ -148,4 +149,5 @@ router
                 message: `${deletedTodo.title} has been successfully deleted!`
             })
     })
-    .use('/todo');
+
+export default router;

@@ -3,9 +3,9 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import app from '../app';
+import { Middleware } from '../app';
 
-const middleware = app.createMiddleware();
+const middleware = new Middleware();
 
 function setUserIdOnRequest(req: Request, _res: Response, next: NextFunction) {
     req.userId = '';
@@ -13,8 +13,10 @@ function setUserIdOnRequest(req: Request, _res: Response, next: NextFunction) {
 }
 
 middleware
-    .use(cors({ origin: [process.env.CLIENT_DOMAIN], credentials: true }))
-    .use(express.json())
-    .use(cookieParser())
-    .use(morgan('tiny'))
-    .use(setUserIdOnRequest);
+    .add(cors({ origin: [process.env.CLIENT_DOMAIN], credentials: true }))
+    .add(express.json())
+    .add(cookieParser())
+    .add(morgan('tiny'))
+    .add(setUserIdOnRequest);
+
+export default middleware;

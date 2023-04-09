@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { LOGIN, SIGNUP } from 'types';
-import app, { user } from '../app';
+import { AppRouter, user } from '../app';
 import { ValidationError } from '../utils/error';
 
-const router = app.createRouter();
+const router = new AppRouter();
 
 router
     .post('/signup', async (req, res) => {
@@ -58,4 +58,5 @@ router
     .post('/signout', async (_req, res) => {
         return res.status(202).clearCookie('SESSION_TOKEN').end();
     })
-    .use();
+
+export default router;

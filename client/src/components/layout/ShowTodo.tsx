@@ -36,7 +36,7 @@ export default function ShowTodo(props: ShowTodoProps) {
         >
             <div
                 class={clsx(
-                    props.todo.completed ? 'bg-primary-900' : 'bg-primary-800',
+                    props.todo.completed ? 'bg-gray-800' : 'bg-primary-800',
                     'rounded p-4'
                 )}
             >

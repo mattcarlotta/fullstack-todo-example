@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import type { Express, NextFunction, Response, Request } from 'express';
+import type { NextFunction, Response, Request, Router } from 'express';
 import chalk from 'chalk';
 import express from 'express';
 
@@ -8,32 +8,33 @@ export type Controller = (
     res: Response,
     next: NextFunction
 ) => Promise<Response> | Promise<void> | Response | void;
-type ExpressMiddleware = (req: Request, res: Response, callback: (err?: Error) => void) => void;
+type ExpressMiddleware = (req: Request, res: Response, next: NextFunction) => void;
 type Method = 'all' | 'get' | 'post' | 'put' | 'delete' | 'patch' | 'options' | 'head';
 
-interface AppUse {
-    use(args?: string | ExpressMiddleware): void;
-}
+export class Middleware {
+    private middlewares: ExpressMiddleware[];
 
-class Middleware implements AppUse {
-    private app: Express;
-
-    constructor(app: Express) {
-        this.app = app;
+    constructor() {
+        this.middlewares = [];
     }
 
-    public use(middleware: ExpressMiddleware) {
-        this.app.use(middleware);
-        return this.app;
+    public add(middleware: ExpressMiddleware) {
+        this.middlewares.push(middleware);
+        return this;
+    }
+
+    public getMiddleware() {
+        return this.middlewares;
     }
 }
 
-class Router implements AppUse {
-    private app: Express;
-    private router = express.Router();
+export class AppRouter {
+    private router: Router;
+    private pathPrefix: string;
 
-    constructor(app: Express) {
-        this.app = app;
+    constructor() {
+        this.router = express.Router();
+        this.pathPrefix = '';
     }
 
     public errorHandler =
@@ -88,9 +89,24 @@ class Router implements AppUse {
         return this.addController('put', path, controllers);
     }
 
-    public use(prefix = '') {
-        this.app.use('/api'.concat(prefix), this.router);
+    public getRouter() {
+        return this.router;
     }
+
+    public getPrefix() {
+        return this.pathPrefix;
+    }
+
+    public prefixPathsWith(prefixPath: string) {
+        if (!this.pathPrefix) {
+            this.pathPrefix = prefixPath;
+        }
+        return this;
+    }
+
+    // public use(prefix = '') {
+    //     this.app.use('/api'.concat(prefix), this.router);
+    // }
 }
 
 class App {
@@ -112,12 +128,23 @@ class App {
         return this._prismaClient;
     }
 
-    public createRouter() {
-        return new Router(this.app);
+    public useMiddleware(Middleware: Middleware) {
+        Middleware.getMiddleware().forEach(m => {
+            this.app.use(m);
+        })
     }
 
-    public createMiddleware() {
-        return new Middleware(this.app);
+    public useRouter(AppRouter: AppRouter) {
+        const prefix = AppRouter.getPrefix();
+        this.app.use('/api'.concat(prefix), AppRouter.getRouter());
+    }
+
+    public serve(path: string) {
+        this.app.use(express.static(path))
+    }
+
+    public use(middleware: ExpressMiddleware) {
+        this.app.use(middleware);
     }
 
     public listen(port = '4000') {
